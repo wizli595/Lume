@@ -1,0 +1,9 @@
+{% extends 'persona/base.html' %}
+
+{% block title %}Logged Out{% endblock %}
+
+{% block content %}
+<h2>Goodbye 👋</h2>
+<p>You have been successfully logged out.</p>
+<a href="{% url 'account_login' %}">Login again</a>
+{% endblock %}

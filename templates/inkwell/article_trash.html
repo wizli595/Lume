@@ -1,0 +1,42 @@
+{% extends 'account/base.html' %}
+{% block title %}
+  Trash
+{% endblock %}
+
+{% block content %}
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fade-in-up {
+      animation: fadeInUp 0.7s ease-out both;
+    }
+  </style>
+
+  <div class="max-w-4xl mx-auto px-4 py-10 animate-fade-in-up">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-extrabold text-purple-200">🗑️ Trash</h1>
+      <a href="{% url 'article_list' %}" class="bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded-full shadow transition">← Back to Articles</a>
+    </div>
+
+    {% if articles %}
+      <div class="space-y-4">
+        {% for article in articles %}
+          <div class="flex justify-between items-center bg-white/5 backdrop-blur rounded-xl p-4 shadow border border-white/10">
+            <span class="text-lg font-semibold text-purple-300">{{ article.title }}</span>
+            <a href="{% url 'article_restore' slug=article.slug %}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-full text-sm shadow transition">♻️ Restore</a>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-purple-400 text-lg mt-6 text-center">Your trash is clean 🧹</p>
+    {% endif %}
+  </div>
+{% endblock %}

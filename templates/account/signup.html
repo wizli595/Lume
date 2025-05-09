@@ -1,0 +1,63 @@
+{% extends 'account/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}
+  Register
+{% endblock %}
+
+{% block body_class %}
+  bg-gradient-to-br from-black via-[#1b0029] to-[#0f001c] text-purple-100
+{% endblock %}
+
+{% block content %}
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .animate-fade-in-up {
+      animation: fadeInUp 0.8s ease-out both;
+    }
+    
+    .glass {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+
+  <div class="min-h-screen flex items-center justify-center px-4">
+    <div class="glass animate-fade-in-up rounded-xl shadow-2xl p-8 w-full max-w-md">
+      <h2 class="text-3xl font-extrabold text-center mb-6 text-purple-300">Create Your Account</h2>
+
+      {% include 'toast.html' %}
+
+      <form method="post" class="space-y-4">
+        {% csrf_token %}
+        {% for field in form %}
+          <div>
+            <label class="block mb-1 text-sm font-semibold text-purple-200">{{ field.label }}</label>
+            {{ field|add_class:'bg-black/30 border border-purple-600 text-white placeholder-purple-300 p-3 w-full rounded focus:outline-none focus:ring-2 focus:ring-purple-500 transition' }}
+            {% if field.errors %}
+              <p class="text-red-400 text-sm mt-1">{{ field.errors|join:', ' }}</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+        <button type="submit" class="w-full py-3 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-pink-500 hover:to-purple-700 text-white font-bold text-lg shadow-md transition duration-300 hover:shadow-xl hover:scale-[1.02]">Register</button>
+      </form>
+
+      <p class="mt-6 text-center text-sm text-purple-300">
+        Already have an account?
+        <a href="{% url 'account_login' %}" class="text-fuchsia-400 hover:underline">Login</a>
+      </p>
+    </div>
+  </div>
+{% endblock %}

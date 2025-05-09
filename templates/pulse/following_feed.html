@@ -1,0 +1,42 @@
+{% extends 'account/base.html' %}
+{% block title %}
+  Following Feed
+{% endblock %}
+
+{% block content %}
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(25px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fade-in-up {
+      animation: fadeInUp 0.6s ease-out both;
+    }
+  </style>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-6 animate-fade-in-up">
+    <div class="flex justify-between items-center">
+      <h1 class="text-4xl font-extrabold text-green-300">👥 Following Feed</h1>
+      <a href="{% url 'home_feed' %}" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-full shadow transition duration-300 hover:scale-105">← Back to Feed</a>
+    </div>
+
+    {% if articles %}
+      <div class="space-y-4">
+        {% for article in articles %}
+          <div class="p-5 bg-white/5 backdrop-blur rounded-xl shadow hover:shadow-lg transition duration-300 border border-white/10">
+            <a href="{% url 'article_detail' slug=article.slug %}" class="text-2xl font-bold text-green-300 hover:underline">{{ article.title }}</a>
+            <p class="text-sm text-green-200 mt-1">by {{ article.author }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-green-300 text-lg">You aren’t following anyone who has posted yet.</p>
+    {% endif %}
+  </div>
+{% endblock %}

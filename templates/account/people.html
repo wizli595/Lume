@@ -1,0 +1,48 @@
+{% extends 'account/base.html' %}
+{% load static %}
+
+{% block title %}
+  People
+{% endblock %}
+
+{% block content %}
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fade-in-up {
+      animation: fadeInUp 0.7s ease-out both;
+    }
+  </style>
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-6 animate-fade-in-up">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-4xl font-extrabold text-purple-200">👥 People</h1>
+      <a href="{% url 'home_feed' %}" class="bg-purple-700 hover:bg-purple-800 text-white font-semibold py-2 px-4 rounded-full shadow transition duration-300 hover:scale-105">← Back to Feed</a>
+    </div>
+
+    {% if people %}
+      <div class="space-y-4">
+        {% for person in people %}
+          <div class="p-5 bg-white/5 backdrop-blur rounded-xl shadow hover:shadow-lg transition duration-300 border border-white/10 flex justify-between items-center">
+            <a href="{% url 'profile' username=person.username %}" class="text-lg font-semibold text-purple-300 hover:underline">{{ person.username }}</a>
+            {% if person.id in followed_ids %}
+              <a href="{% url 'unfollow_user' user_id=person.id %}" class="bg-red-600 hover:bg-red-700 text-white text-sm font-medium py-1.5 px-4 rounded-full shadow transition hover:scale-105">🚫 Unfollow</a>
+            {% else %}
+              <a href="{% url 'follow_user' user_id=person.id %}" class="bg-green-600 hover:bg-green-700 text-white text-sm font-medium py-1.5 px-4 rounded-full shadow transition hover:scale-105">➕ Follow</a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-purple-400 text-lg">No people to follow. You're already connected!</p>
+    {% endif %}
+  </div>
+{% endblock %}

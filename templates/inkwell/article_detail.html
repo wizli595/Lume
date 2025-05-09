@@ -1,0 +1,193 @@
+{% extends 'account/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}
+  {{ object.title }}
+{% endblock %}
+
+{% block content %}
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes ping-slow {
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.2);
+        opacity: 0.6;
+      }
+    }
+    
+    .animate-fade-in-up {
+      animation: fadeInUp 0.6s ease-out both;
+    }
+    
+    .animate-ping-slow {
+      animation: ping-slow 1s infinite;
+    }
+    #ai-output::after {
+      content: '|';
+      animation: blink 1s step-start infinite;
+      color: #ccc;
+    }
+    
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+  </style>
+
+  <div class="max-w-3xl mx-auto mt-10 p-6 bg-white/10 backdrop-blur border border-white/10 rounded-lg shadow-lg animate-fade-in-up space-y-8">
+    <!-- Article Header -->
+    <div>
+      <h1 class="text-4xl font-extrabold text-purple-200">{{ object.title }}</h1>
+      <p class="text-sm text-purple-400">by {{ object.author }} • {{ object.created_at|date:'F j, Y - H:i' }}</p>
+      <div class="prose prose-invert mt-4 text-purple-100">{{ object.content|linebreaks }}</div>
+    </div>
+
+    <!-- 🔮 AI Tools Section -->
+    <div class="p-4 rounded-lg border border-purple-700 bg-black/20 shadow-sm text-purple-100 space-y-3 animate-fade-in-up">
+      <h2 class="text-xl font-bold text-purple-300">✨ AI Tools</h2>
+      <div class="flex flex-wrap gap-3">
+        <button onclick="handleSummary()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow flex items-center gap-2">🧠 <span>Summarize</span></button>
+        <button onclick="handleTranslation()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded shadow flex items-center gap-2">🌍 <span>Translate</span></button>
+        <button onclick="handleTitleSlug()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded shadow flex items-center gap-2">✨ <span>Suggest Title</span></button>
+      </div>
+      <div id="ai-output" class="hidden mt-4 p-3 bg-white/10 border border-purple-700 rounded text-sm text-purple-200 whitespace-pre-wrap transition-opacity duration-300"></div>
+    </div>
+
+    <!-- 💬 Comment Section -->
+    <div>
+      <h2 class="text-2xl font-bold text-purple-300 mb-4">💬 Echoes</h2>
+
+      {% if user.is_authenticated %}
+        <form method="post" action="{% url 'comment_create' article_id=object.id %}" class="mb-6 space-y-3">
+          {% csrf_token %}
+          {{ comment_form.content|add_class:'w-full bg-black/30 p-3 rounded border border-purple-700 text-purple-100 placeholder-purple-400' }}
+          <button type="submit" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded shadow">➤ Post Comment</button>
+        </form>
+      {% else %}
+        <p class="text-purple-300">
+          Please <a href="{% url 'account_login' %}" class="underline">log in</a> to comment.
+        </p>
+      {% endif %}
+
+      {% for comment in object.comments.all %}
+        {% if not comment.parent and not comment.is_deleted %}
+          <div class="bg-white/5 p-4 rounded shadow border border-white/10 mb-4">
+            <p class="text-sm text-purple-300">{{ comment.author }} • {{ comment.created_at|timesince }} ago</p>
+            <p class="text-purple-100 mt-1">{{ comment.content }}</p>
+
+            <div class="flex items-center gap-3 mt-2 text-sm">
+              <div hx-target="this" hx-swap="outerHTML">
+                {% include 'echoes/partials/comment_like_button.html' with comment=comment user=user %}
+              </div>
+
+              {% if user == comment.author %}
+                <form method="post" action="{% url 'comment_soft_delete' comment_id=comment.id %}" class="inline">
+                  {% csrf_token %}
+                  <button type="submit" class="text-red-400 hover:underline text-sm">🗑️ Delete</button>
+                </form>
+              {% endif %}
+            </div>
+
+            <!-- Replies -->
+            {% for reply in comment.replies.all %}
+              {% if not reply.is_deleted %}
+                <div class="ml-6 mt-3 p-3 bg-white/5 border border-white/10 rounded">
+                  <p class="text-sm text-purple-300">{{ reply.author }} • {{ reply.created_at|timesince }} ago</p>
+                  <p class="text-purple-100">{{ reply.content }}</p>
+                </div>
+              {% endif %}
+            {% endfor %}
+
+            <!-- Reply Form -->
+            {% if user.is_authenticated %}
+              <form method="post" action="{% url 'comment_create' article_id=object.id %}" class="mt-3 space-y-2">
+                {% csrf_token %}
+                <input type="hidden" name="parent_id" value="{{ comment.id }}" />
+                <textarea name="content" rows="2" class="w-full bg-black/20 p-2 rounded text-sm text-white" placeholder="Reply..."></textarea>
+                <button type="submit" class="text-purple-400 hover:text-purple-300 text-sm">Reply</button>
+              </form>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% empty %}
+        <p class="text-purple-400">No echoes yet. Start the conversation!</p>
+      {% endfor %}
+    </div>
+
+    <!-- Navigation + Actions -->
+    <div class="flex justify-between mt-8 flex-wrap gap-4">
+      <a href="{% url 'article_list' %}" class="bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded-full shadow">← Back</a>
+      {% if request.user == object.author %}
+        <div class="flex gap-3">
+          <a href="{% url 'article_edit' slug=object.slug %}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-full shadow">✏️ Edit</a>
+          <a href="{% url 'article_delete' slug=object.slug %}" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full shadow">🗑️ Delete</a>
+        </div>
+        {% if object.hidden %}
+          <form action="{% url 'unlock_article' slug=object.slug %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="flex items-center gap-2 px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 animate-ping-slow" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m4-6V9a4 4 0 00-8 0v2m-1 0h10a1 1 0 011 1v6a1 1 0 01-1 1H7a1 1 0 01-1-1v-6a1 1 0 011-1z" />
+              </svg>Unlock
+            </button>
+          </form>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- AI Tool Script -->
+  <script>
+    async function handleSummary() {
+      const res = await fetch("{% url 'summarize_article' slug=object.slug %}")
+      const data = await res.json()
+      showAIOutput('🧠 Summary:\n' + data.summary)
+    }
+    
+    async function handleTranslation() {
+      const lang = prompt('Enter target language (default: French):', 'French') || 'French'
+      const res = await fetch("{% url 'translate_article' slug=object.slug %}?lang=" + encodeURIComponent(lang))
+      const data = await res.json()
+      showAIOutput('🌍 Translation to ' + lang + ':\n' + data.translation)
+    }
+    
+    async function handleTitleSlug() {
+      const res = await fetch("{% url 'suggest_title_slug' slug=object.slug %}")
+      const data = await res.json()
+      showAIOutput(`✨ Suggested Title: ${data.title}\n🔗 Slug: ${data.slug}`)
+    }
+    
+    function showAIOutput(content) {
+      const box = document.getElementById('ai-output')
+      box.classList.remove('hidden')
+      box.textContent = '' // clear previous content
+    
+      let index = 0
+      function typeNextChar() {
+        if (index < content.length) {
+          box.textContent += content[index++]
+          setTimeout(typeNextChar, 12) // adjust typing speed here (ms per character)
+        }
+      }
+    
+      typeNextChar()
+    }
+  </script>
+{% endblock %}

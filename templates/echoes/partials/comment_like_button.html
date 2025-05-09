@@ -1,0 +1,13 @@
+<!-- echoes/partials/comment_like_button.html -->
+<button 
+  hx-post="{% url 'comment_like_toggle' comment.id %}" 
+  hx-swap="outerHTML" 
+  hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' 
+  class="text-pink-400 hover:underline text-sm"
+>
+  {% if user in comment.likes.all %}
+    💔 Unlike {{ comment.like_count }}
+  {% else %}
+    ❤️ Like {{ comment.like_count }}
+  {% endif %}
+</button>

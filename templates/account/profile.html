@@ -1,0 +1,58 @@
+{% extends 'account/base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %}
+  {{ profile_user.username }}'s Profile
+{% endblock %}
+
+{% block content %}
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fade-in-up {
+      animation: fadeInUp 0.8s ease-out both;
+    }
+    
+    @keyframes pulseBorder {
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5);
+      }
+      50% {
+        box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+      }
+    }
+    .avatar-pulse {
+      animation: pulseBorder 2s infinite;
+    }
+  </style>
+
+  <div class="min-h-screen bg-gradient-to-br from-black via-[#1b0029] to-black flex items-center justify-center py-12 px-4">
+    <div class="bg-white/5 backdrop-blur-lg shadow-2xl rounded-2xl overflow-hidden w-full max-w-4xl border border-white/10 animate-fade-in-up">
+      <!-- Profile Card + Edit Button (swappable area) -->
+      <div id="edit-profile-area">
+        {% include 'account/partials/profile_card.html' %}
+        {% if request.user == profile_user %}
+          <div class="p-6">
+            <button hx-get="{% url 'profile_edit' %}" hx-target="#edit-profile-area" hx-swap="innerHTML" class="bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded shadow">✏️ Edit Profile</button>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Bio Section (non-editable) -->
+      <div class="p-8 border-t border-white/10">
+        <h3 class="text-2xl font-semibold mb-4 text-purple-200">🧾 About Me</h3>
+        <p class="text-purple-100/80 leading-relaxed">{{ profile_user.profile.bio|default:"This user hasn't written a bio yet." }}</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
