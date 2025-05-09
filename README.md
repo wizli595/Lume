@@ -75,11 +75,11 @@
 ## 📁 Project Structure
 
 ```
-InkFuse/
-├── inkwell/       # Articles and AI utilities
+Lume/
+├── inkwell/       # Articles
 ├── echoes/        # Comments system
 ├── persona/       # Authentication & profiles
-├── summeriez/     # LangChain + OpenAI logic
+├── InkFuse/     # LangChain + OpenAI logic
 ├── pulse/         # Feeds and social discovery
 ├── lume/          # Django project settings & root config
 └── templates/     # Shared and per-app templates
