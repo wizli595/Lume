@@ -1,0 +1,500 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="bg-gradient-to-br from-purple-950 via-purple-900 to-purple-950 text-purple-100">
+  <head>
+    <meta charset="UTF-8" />
+    <title>404 Not Found - LUME</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      /* Base animations */
+      @keyframes shimmer {
+        0% {
+          background-position: -200% 0;
+        }
+        100% {
+          background-position: 200% 0;
+        }
+      }
+      
+      @keyframes float {
+        0% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-15px) rotate(2deg);
+        }
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+      }
+      
+      @keyframes pulse {
+        0% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0.3;
+        }
+      }
+      
+      @keyframes glitch {
+        0% {
+          text-shadow: 0.05em 0 0 rgba(255, 0, 255, 0.75), -0.05em -0.025em 0 rgba(0, 255, 255, 0.75), 0.025em 0.05em 0 rgba(0, 255, 0, 0.75);
+        }
+        14% {
+          text-shadow: 0.05em 0 0 rgba(255, 0, 255, 0.75), -0.05em -0.025em 0 rgba(0, 255, 255, 0.75), 0.025em 0.05em 0 rgba(0, 255, 0, 0.75);
+        }
+        15% {
+          text-shadow: -0.05em -0.025em 0 rgba(255, 0, 255, 0.75), 0.025em 0.025em 0 rgba(0, 255, 255, 0.75), -0.05em -0.05em 0 rgba(0, 255, 0, 0.75);
+        }
+        49% {
+          text-shadow: -0.05em -0.025em 0 rgba(255, 0, 255, 0.75), 0.025em 0.025em 0 rgba(0, 255, 255, 0.75), -0.05em -0.05em 0 rgba(0, 255, 0, 0.75);
+        }
+        50% {
+          text-shadow: 0.025em 0.05em 0 rgba(255, 0, 255, 0.75), 0.05em 0 0 rgba(0, 255, 255, 0.75), 0 -0.05em 0 rgba(0, 255, 0, 0.75);
+        }
+        99% {
+          text-shadow: 0.025em 0.05em 0 rgba(255, 0, 255, 0.75), 0.05em 0 0 rgba(0, 255, 255, 0.75), 0 -0.05em 0 rgba(0, 255, 0, 0.75);
+        }
+        100% {
+          text-shadow: -0.025em 0 0 rgba(255, 0, 255, 0.75), -0.025em -0.025em 0 rgba(0, 255, 255, 0.75), -0.025em -0.05em 0 rgba(0, 255, 0, 0.75);
+        }
+      }
+      
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      
+      @keyframes meteor {
+        0% {
+          transform: translateX(200%) translateY(-200%) scale(0.3);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        70% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(-200%) translateY(200%) scale(0.1);
+          opacity: 0;
+        }
+      }
+      
+      /* Element styling */
+      .gradient-text {
+        background: linear-gradient(90deg, #a855f7, #ec4899, #8b5cf6);
+        background-size: 200% auto;
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer 3s linear infinite;
+      }
+      
+      .glass {
+        background: linear-gradient(120deg, rgba(91, 33, 182, 0.15), rgba(67, 20, 127, 0.1));
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        box-shadow: 0 8px 32px rgba(91, 33, 182, 0.3);
+        transition: all 0.5s ease;
+        max-width: 550px;
+        width: 100%;
+      }
+      
+      .glass:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(168, 85, 247, 0.3);
+        border: 1px solid rgba(236, 72, 153, 0.3);
+      }
+      
+      .stars {
+        background-image: radial-gradient(#a855f750 1px, transparent 1px);
+        background-size: 50px 50px;
+        opacity: 0.15;
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+      }
+      
+      .stars-small {
+        background-image: radial-gradient(#ec489950 1px, transparent 1px);
+        background-size: 30px 30px;
+        opacity: 0.1;
+        animation: shimmer 80s linear infinite;
+      }
+      
+      .stars-medium {
+        background-image: radial-gradient(#a855f760 1.5px, transparent 1.5px);
+        background-size: 70px 70px;
+        opacity: 0.12;
+        animation: shimmer 120s linear infinite reverse;
+      }
+      
+      .glitch-text {
+        animation: glitch 2s infinite;
+        position: relative;
+      }
+      
+      .orbit-container {
+        position: relative;
+        width: 250px;
+        height: 250px;
+        margin: 0 auto;
+      }
+      
+      .planet {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #4c1d95, #2d1257);
+        box-shadow: 0 0 20px rgba(168, 85, 247, 0.7);
+        animation: pulse 4s infinite ease-in-out;
+      }
+      
+      .orbit {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        border: 1px dashed rgba(236, 72, 153, 0.3);
+        animation: spin 20s linear infinite;
+      }
+      
+      .satellite {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #ec4899, #8b5cf6);
+        transform: translateX(-50%);
+        box-shadow: 0 0 10px rgba(236, 72, 153, 0.7);
+      }
+      
+      .meteor {
+        position: absolute;
+        width: 150px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #ec4899, transparent);
+        opacity: 0;
+        z-index: 0;
+      }
+      
+      .meteor:before {
+        content: '';
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: radial-gradient(#ec4899, transparent 70%);
+        left: 0;
+        top: -7px;
+      }
+      
+      .meteor-1 {
+        top: 20%;
+        left: 10%;
+        animation: meteor 5s 1s linear infinite;
+        transform: rotate(35deg);
+      }
+      
+      .meteor-2 {
+        top: 60%;
+        left: 80%;
+        animation: meteor 7s 3s linear infinite;
+        transform: rotate(-35deg);
+      }
+      
+      .meteor-3 {
+        top: 40%;
+        left: 60%;
+        animation: meteor 4s 2s linear infinite;
+        transform: rotate(15deg);
+      }
+      
+      .floating {
+        animation: float 6s ease-in-out infinite;
+      }
+      
+      .floating-slow {
+        animation: float 8s ease-in-out infinite;
+      }
+      
+      .floating-fast {
+        animation: float 4s ease-in-out infinite;
+      }
+      
+      .planet-rings {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 120px;
+        height: 30px;
+        border-radius: 50%;
+        border: 3px solid rgba(236, 72, 153, 0.3);
+        transform: translate(-50%, -50%) rotateX(75deg);
+      }
+      
+      .error-code {
+        position: relative;
+        display: inline-block;
+      }
+      
+      .error-code span {
+        display: inline-block;
+        animation: float 4s ease-in-out infinite;
+      }
+      
+      .error-code span:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .error-code span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .error-code span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      .error-code span:nth-child(4) {
+        animation-delay: 0.6s;
+      }
+      .error-code span:nth-child(5) {
+        animation-delay: 0.8s;
+      }
+      .error-code span:nth-child(6) {
+        animation-delay: 1s;
+      }
+      .error-code span:nth-child(7) {
+        animation-delay: 1.2s;
+      }
+      
+      .home-button {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+      
+      .home-button:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 10px 25px rgba(168, 85, 247, 0.5);
+      }
+      
+      .home-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: all 0.6s ease;
+      }
+      
+      .home-button:hover::before {
+        left: 100%;
+      }
+      
+      .ufo {
+        position: absolute;
+        width: 60px;
+        height: 20px;
+        background: rgba(236, 72, 153, 0.2);
+        border-radius: 50px;
+        top: 15%;
+        left: 75%;
+        filter: blur(8px);
+        animation: float 10s ease-in-out infinite alternate;
+        z-index: 1;
+      }
+      
+      .ufo::before {
+        content: '';
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: linear-gradient(0deg, rgba(168, 85, 247, 0.5), rgba(236, 72, 153, 0.5));
+        top: -15px;
+        left: 15px;
+      }
+      
+      .ufo::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-left: 30px solid transparent;
+        border-right: 30px solid transparent;
+        border-top: 30px solid rgba(168, 85, 247, 0.15);
+        left: 0;
+        top: 15px;
+        filter: blur(5px);
+      }
+    </style>
+  </head>
+
+  <body class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 overflow-hidden" style="background-color: #2D1B44;">
+    <!-- Background stars -->
+    <div class="stars"></div>
+    <div class="stars stars-small"></div>
+    <div class="stars stars-medium"></div>
+
+    <!-- Meteors -->
+    <div class="meteor meteor-1"></div>
+    <div class="meteor meteor-2"></div>
+    <div class="meteor meteor-3"></div>
+
+    <!-- UFO -->
+    <div class="ufo"></div>
+
+    <!-- Main content -->
+    <div class="relative z-10 max-w-xl glass p-10 rounded-2xl border border-purple-800 shadow-2xl mx-auto my-0">
+      <!-- Animated logo -->
+      {% comment %} <div class="mb-8">
+        <img src="{% static 'ink.ico' %}" alt="LUME Logo" class="w-20 h-20 mx-auto floating" />
+      </div> {% endcomment %}
+
+      <!-- Planet animation -->
+      <div class="orbit-container mb-6">
+        <div class="planet">
+          <div class="planet-rings"></div>
+        </div>
+        <div class="orbit">
+          <div class="satellite"></div>
+        </div>
+      </div>
+
+      <!-- Animated 404 text -->
+      <h1 class="text-6xl font-extrabold mb-6 glitch-text">
+        <div class="error-code">
+          <span>4</span>
+          <span>0</span>
+          <span>4</span>
+        </div>
+      </h1>
+
+      <h2 class="text-3xl font-bold gradient-text drop-shadow-2xl mb-4">Cosmic Void Detected</h2>
+
+      <p class="text-lg text-purple-300 leading-relaxed mb-8 floating-slow">
+        Sorry, space explorer 🚀<br />
+        The page you're looking for has drifted into a black hole or<br />
+        might exist in a parallel universe.
+      </p>
+
+      <a href="/" class="inline-block bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-3 text-white font-semibold rounded-full shadow-lg home-button">Return to Mission Control</a>
+
+      <div class="mt-6 text-purple-400 text-sm floating-fast">
+        <span class="inline-block">
+          <span class="inline-block mr-1">✦</span>
+          Recalibrating coordinates...
+          <span class="inline-block ml-1">✦</span>
+        </span>
+      </div>
+    </div>
+
+    <script>
+      // Add random floating stars
+      function createStars() {
+        const container = document.body
+        const starCount = 20
+      
+        for (let i = 0; i < starCount; i++) {
+          const star = document.createElement('div')
+          star.style.position = 'absolute'
+          star.style.width = Math.random() * 3 + 2 + 'px'
+          star.style.height = star.style.width
+          star.style.backgroundColor = '#ffffff'
+          star.style.borderRadius = '50%'
+          star.style.opacity = Math.random() * 0.5 + 0.3
+          star.style.top = Math.random() * 100 + 'vh'
+          star.style.left = Math.random() * 100 + 'vw'
+          star.style.zIndex = '0'
+      
+          // Create twinkling animation
+          const duration = Math.random() * 3 + 2
+          star.style.animation = `pulse ${duration}s infinite ease-in-out`
+          star.style.animationDelay = Math.random() * 5 + 's'
+      
+          container.appendChild(star)
+        }
+      }
+      
+      // Create additional meteors randomly
+      function createRandomMeteor() {
+        const container = document.body
+        const meteor = document.createElement('div')
+      
+        meteor.className = 'meteor'
+        meteor.style.top = Math.random() * 100 + '%'
+        meteor.style.left = Math.random() * 100 + '%'
+        meteor.style.transform = 'rotate(' + (Math.random() * 60 - 30) + 'deg)'
+      
+        // Create the meteor head
+        const head = document.createElement('div')
+        head.style.position = 'absolute'
+        head.style.width = '15px'
+        head.style.height = '15px'
+        head.style.borderRadius = '50%'
+        head.style.background = 'radial-gradient(#ec4899, transparent 70%)'
+        head.style.left = '0'
+        head.style.top = '-7px'
+      
+        meteor.appendChild(head)
+        container.appendChild(meteor)
+      
+        // Animate the meteor
+        meteor.style.animation = 'meteor ' + (Math.random() * 4 + 3) + 's linear forwards'
+      
+        // Remove the meteor after animation completes
+        setTimeout(() => {
+          container.removeChild(meteor)
+        }, 8000)
+      }
+      
+      // Initialize animations
+      document.addEventListener('DOMContentLoaded', function () {
+        createStars()
+      
+        // Create random meteors periodically
+        setInterval(createRandomMeteor, 5000)
+      
+        // Add interactive elements
+        document.querySelector('.glass').addEventListener('mousemove', function (e) {
+          const bounds = this.getBoundingClientRect()
+          const mouseX = e.clientX - bounds.left
+          const mouseY = e.clientY - bounds.top
+          const centerX = bounds.width / 2
+          const centerY = bounds.height / 2
+      
+          const offsetX = (mouseX - centerX) / 30
+          const offsetY = (mouseY - centerY) / 30
+      
+          this.style.transform = `translateY(-5px) rotateX(${-offsetY}deg) rotateY(${offsetX}deg)`
+        })
+      
+        document.querySelector('.glass').addEventListener('mouseleave', function () {
+          this.style.transform = 'translateY(-5px) rotateX(0) rotateY(0)'
+        })
+      })
+    </script>
+  </body>
+</html>

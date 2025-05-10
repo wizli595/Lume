@@ -56,9 +56,9 @@ ACCOUNT_ADAPTER = 'persona.allauth_adapter.CustomAccountAdapter'
 SECRET_KEY = 'django-insecure-gupuzjzwk)q)ytdgb*j^ag2bkc#+qjmd+xi_mp^uutykpc18p6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 SITE_ID = 1
 # Authentication
