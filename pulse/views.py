@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from datetime import timedelta
 from django.db.models import Q
-
+from django.db.models import Count
 from inkwell.models import Article
 from .models import Follow
 from persona.models import CustomUser
@@ -26,8 +26,14 @@ class TrendingFeedView(ListView):
 
     def get_queryset(self):
         recent_time = timezone.now() - timedelta(days=3)
-        return Article.objects.filter(created_at__gte=recent_time, deleted_at__isnull=True, hidden=False).order_by('-created_at')
 
+        return (
+            Article.objects
+            .filter(created_at__gte=recent_time, deleted_at__isnull=True, hidden=False)
+            .annotate(comment_count=Count('comments', filter=Q(comments__is_deleted=False)))
+            .filter(comment_count__gt=2)
+            .order_by('-comment_count', '-created_at')
+        )
 
 class FollowingFeedView(LoginRequiredMixin, ListView):
     template_name = 'pulse/following_feed.html'

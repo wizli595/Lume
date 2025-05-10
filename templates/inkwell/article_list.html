@@ -79,4 +79,25 @@
       <p class="text-purple-400 text-lg">No articles yet. Be the first to write one!</p>
     {% endif %}
   </div>
+  {% if is_paginated %}
+    <div class="mt-10 flex justify-center items-center gap-3 text-purple-200 animate-fade-in-up">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="inline-flex items-center gap-1 px-4 py-2 bg-gradient-to-r from-purple-700 to-purple-900 hover:from-purple-600 hover:to-purple-800 text-white rounded-full shadow transition-transform transform hover:scale-105">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>Previous
+        </a>
+      {% endif %}
+
+      <span class="px-5 py-2 bg-black/20 border border-purple-800 text-sm rounded-full shadow-inner">📄 Page <strong>{{ page_obj.number }}</strong> of <strong>{{ page_obj.paginator.num_pages }}</strong></span>
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="inline-flex items-center gap-1 px-4 py-2 bg-gradient-to-r from-purple-700 to-purple-900 hover:from-purple-600 hover:to-purple-800 text-white rounded-full shadow transition-transform transform hover:scale-105">
+          Next<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      {% endif %}
+    </div>
+  {% endif %}
 {% endblock %}

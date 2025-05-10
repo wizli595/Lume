@@ -15,7 +15,7 @@ class ArticleListView(ListView):
     template_name = "inkwell/article_list.html"
     context_object_name = "articles"
 
-
+    paginate_by=3
 
 
     def get_queryset(self):

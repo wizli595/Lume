@@ -11,7 +11,7 @@
 
 {% block content %}
   <style>
-    /* Custom Animations */
+    /* Enhanced Custom Animations */
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -30,6 +30,26 @@
       to {
         opacity: 1;
         transform: translateY(0);
+      }
+    }
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
       }
     }
     @keyframes zoomIn {
@@ -53,6 +73,31 @@
         opacity: 0.9;
       }
     }
+    @keyframes floatAnimation {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+    @keyframes rotateAnimation {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+      100% {
+        background-position: 200% 0;
+      }
+    }
     
     .animate-fade-in-up {
       animation: fadeInUp 0.8s ease-out both;
@@ -60,11 +105,28 @@
     .animate-fade-in-down {
       animation: fadeInDown 0.8s ease-out both;
     }
+    .animate-fade-in-left {
+      animation: fadeInLeft 0.8s ease-out both;
+    }
+    .animate-fade-in-right {
+      animation: fadeInRight 0.8s ease-out both;
+    }
     .animate-zoom-in {
       animation: zoomIn 0.6s ease-out both;
     }
     .animate-pulse-slow {
-      animation: pulseSlow 2.5s ease-in-out infinite;
+      animation: pulseSlow 3s ease-in-out infinite;
+    }
+    .animate-float {
+      animation: floatAnimation 3s ease-in-out infinite;
+    }
+    .animate-rotate {
+      animation: rotateAnimation 30s linear infinite;
+    }
+    .animate-shimmer {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.1) 60%, rgba(255, 255, 255, 0));
+      background-size: 200% 100%;
+      animation: shimmer 3s infinite;
     }
     
     .delay-100 {
@@ -82,46 +144,128 @@
     .delay-500 {
       animation-delay: 0.5s;
     }
+    .delay-600 {
+      animation-delay: 0.6s;
+    }
+    .delay-700 {
+      animation-delay: 0.7s;
+    }
     
-    /* Glass effect for cards */
+    /* Enhanced Glass effect for cards */
     .glass {
-      background: linear-gradient(120deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-      backdrop-filter: blur(10px);
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.03));
+      backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Elegant hover effects */
+    .hover-glow:hover {
+      box-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+    }
+    
+    /* Custom scroll animations */
+    .reveal {
+      opacity: 0;
+      transition: all 0.8s ease;
+    }
+    .reveal.active {
+      opacity: 1;
+    }
+    
+    /* Logo ring effect */
+    .logo-ring {
+      position: relative;
+    }
+    .logo-ring::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, rgba(168, 85, 247, 0), rgba(168, 85, 247, 0.8), rgba(219, 39, 119, 0.8), rgba(168, 85, 247, 0.8), rgba(168, 85, 247, 0));
+      animation: rotateAnimation 4s linear infinite;
+      filter: blur(5px);
+      z-index: -1;
+    }
+    
+    /* Gradient text enhancement */
+    .gradient-text {
+      background: linear-gradient(120deg, #a855f7, #ec4899, #8b5cf6);
+      background-size: 200% auto;
+      background-clip: text;
+      -webkit-background-clip: text;
+      text-fill-color: transparent;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3s linear infinite;
     }
   </style>
 
   <main class="relative z-10">
-    <!-- HERO SECTION -->
+    <!-- HERO SECTION WITH FEATURED LOGO -->
     <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative overflow-hidden">
+      <!-- Background elements -->
       <div class="absolute inset-0 bg-gradient-to-br from-black/90 via-purple-900/50 to-black/90 backdrop-blur-sm animate-fade-in-down"></div>
-      <div class="z-10 space-y-8 animate-fade-in-up">
-        <h1 class="text-6xl md:text-7xl font-extrabold leading-tight tracking-tight drop-shadow-2xl">
-          Welcome to
-          <span class="bg-gradient-to-r from-purple-400 via-pink-500 to-purple-700 bg-clip-text text-transparent animate-pulse-slow">LUME</span>
-        </h1>
-        <p class="text-xl md:text-2xl max-w-2xl mx-auto text-purple-200/80 leading-relaxed">For creators, rebels, and curious minds. Write. Share. Connect.</p>
-        <div class="flex flex-wrap justify-center gap-6 mt-4">
+
+      <!-- Animated particles overlay -->
+      <div class="absolute inset-0 opacity-40" id="particles-js"></div>
+
+      <div class="z-10 space-y-10 animate-fade-in-up max-w-4xl text-center mx-auto">
+        <!-- Logo Circle -->
+        <div class="relative w-32 h-32 mx-auto animate-float">
+          <div class="absolute inset-0 rounded-full overflow-hidden logo-ring">
+            <img src="{% static 'ink.ico' %}" alt="Lume Logo" class="w-full h-full object-cover animate-pulse-slow" loading="eager" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-70"></div>
+          </div>
+          <span class="absolute bottom-3 inset-x-0 text-center text-2xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-pink-400 drop-shadow-lg">LUME</span>
+        </div>
+
+        <!-- Title -->
+        <h1 class="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight drop-shadow-xl">Welcome to <span class="gradient-text animate-pulse-slow">LUME</span></h1>
+
+        <!-- Subtitle -->
+        <p class="text-lg md:text-2xl max-w-2xl mx-auto text-purple-200/90 leading-relaxed">For creators, rebels, and curious minds. Write. Share. Connect.</p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-wrap justify-center gap-6 mt-6">
           {% if user.is_authenticated %}
-            <a href="{% url 'article_create' %}" class="bg-gradient-to-r from-purple-600 to-pink-500 px-8 py-3 rounded-full text-white font-semibold shadow-lg transition hover:scale-105 duration-300 animate-zoom-in">Create</a>
-            <a href="{% url 'article_list' %}" class="bg-purple-700 hover:bg-purple-800 px-8 py-3 rounded-full text-white font-semibold shadow-lg transition hover:scale-105 duration-300 animate-zoom-in">Explore</a>
+            <a href="{% url 'article_create' %}" class="bg-gradient-to-r from-purple-600 to-pink-500 px-8 py-3 rounded-full text-white font-semibold shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-purple-500/30 animate-zoom-in">Create</a>
+            <a href="{% url 'article_list' %}" class="bg-purple-700 hover:bg-purple-800 px-8 py-3 rounded-full text-white font-semibold shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-purple-500/30 animate-zoom-in delay-200">Explore</a>
           {% else %}
-            <a href="{% url 'account_login' %}" class="bg-purple-700 hover:bg-purple-800 px-8 py-3 rounded-full text-white font-semibold shadow-lg transition hover:scale-105 duration-300 animate-zoom-in">Login</a>
-            <a href="{% url 'account_signup' %}" class="bg-gradient-to-r from-fuchsia-600 to-purple-800 px-8 py-3 rounded-full text-white font-semibold shadow-lg transition hover:scale-105 duration-300 animate-zoom-in delay-200">Register</a>
+            <a href="{% url 'account_login' %}" class="bg-purple-700 hover:bg-purple-800 px-8 py-3 rounded-full text-white font-semibold shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-purple-500/30 animate-zoom-in">Login</a>
+            <a href="{% url 'account_signup' %}" class="bg-gradient-to-r from-fuchsia-600 to-purple-800 px-8 py-3 rounded-full text-white font-semibold shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-purple-500/30 animate-zoom-in delay-200">Register</a>
           {% endif %}
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce opacity-70">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-purple-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
         </div>
       </div>
     </section>
 
-    <!-- FEATURES SECTION -->
-    <section class="py-24 bg-gradient-to-b from-[#0c0014] to-black relative">
+    <!-- FEATURES SECTION WITH LOGO BULLETS -->
+    <section class="py-24 bg-gradient-to-b from-[#0c0014] to-black relative" id="features">
+      <!-- Decorative elements -->
+      <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent"></div>
+
       <div class="max-w-6xl mx-auto px-6 text-center space-y-16">
-        <h2 class="text-5xl font-bold text-purple-300 animate-fade-in-down">✨ What Makes LUME Shine</h2>
+        <h2 class="text-5xl font-bold text-purple-300 animate-fade-in-down reveal"><span class="gradient-text">✨</span> What Makes LUME Shine</h2>
+
         <div class="grid md:grid-cols-3 gap-12">
           {% for feature in features %}
-            <div class="glass p-6 rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300 animate-zoom-in delay-{{ forloop.counter0|add:'1' }}00">
-              <div class="text-4xl animate-pulse-slow mb-3">{{ feature.icon }}</div>
-              <h3 class="text-2xl font-bold text-purple-100">{{ feature.title }}</h3>
+            <div class="glass p-8 rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300 hover-glow animate-zoom-in delay-{{ forloop.counter0|add:'1' }}00 reveal">
+              <!-- Mini logo as feature icon -->
+              <div class="relative w-16 h-16 mx-auto mb-6">
+                <div class="absolute inset-0 rounded-full overflow-hidden">
+                  <img src="{% static 'ink.ico' %}" alt="Lume Logo" class="w-full h-full object-cover" />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-70"></div>
+                </div>
+                <span class="absolute bottom-1 left-0 right-0 text-center text-xs font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-pink-400 drop-shadow-md">{{ feature.title|truncatechars:8 }}</span>
+              </div>
+
+              <h3 class="text-2xl font-bold text-purple-100 mb-3">{{ feature.title }}</h3>
               <p class="mt-2 text-purple-300 text-sm leading-relaxed">{{ feature.desc }}</p>
             </div>
           {% endfor %}
@@ -129,14 +273,41 @@
       </div>
     </section>
 
+    <!-- CALL TO ACTION SECTION -->
+    <section class="py-20 relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-r from-purple-900/30 to-fuchsia-900/20"></div>
+
+      <!-- Floating logo decoration -->
+      <div class="absolute -right-16 top-1/2 transform -translate-y-1/2 opacity-10 w-64 h-64">
+        <img src="{% static 'ink.ico' %}" alt="" class="w-full h-full object-contain animate-rotate" />
+      </div>
+
+      <div class="max-w-4xl mx-auto px-6 relative z-10">
+        <div class="glass p-12 rounded-3xl text-center reveal">
+          <h2 class="text-4xl font-bold mb-6 gradient-text">Ready to Start Your Journey?</h2>
+          <p class="text-lg text-purple-200 mb-8">Join thousands of writers and creators who've found their voice on LUME.</p>
+          <a href="{% url 'account_signup' %}" class="inline-block bg-gradient-to-r from-purple-600 to-pink-500 px-10 py-4 rounded-full text-white font-semibold shadow-lg transition hover:scale-105 hover:shadow-purple-500/25 duration-300">Get Started Now</a>
+        </div>
+      </div>
+    </section>
+
     <!-- TEAM SECTION -->
-    <section class="py-24 bg-gradient-to-t from-black via-[#1a002e] to-[#0a0018] relative">
+    <section class="py-24 bg-gradient-to-t from-black via-[#1a002e] to-[#0a0018] relative" id="team">
       <div class="max-w-7xl mx-auto px-6 text-center space-y-12">
-        <h2 class="text-5xl font-bold text-purple-300 animate-fade-in-down">👩‍🚀 Meet the Crew</h2>
+        <h2 class="text-5xl font-bold text-purple-300 animate-fade-in-down reveal"><span class="gradient-text">👩‍🚀</span> Meet the Crew</h2>
+
         <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-10">
           {% for member in team %}
-            <div class="glass p-6 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300 animate-fade-in-up delay-{{ forloop.counter0|add:'1' }}00">
-              <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-purple-700 flex items-center justify-center text-white text-2xl font-bold animate-pulse-slow">{{ member.initial }}</div>
+            <div class="glass p-6 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300 hover-glow animate-fade-in-up delay-{{ forloop.counter0|add:'1' }}00 reveal">
+              <!-- Team member with logo avatar -->
+              <div class="relative w-20 h-20 mx-auto mb-4">
+                <div class="absolute inset-0 rounded-full overflow-hidden">
+                  <img src="{% static 'ink.ico' %}" alt="Lume Logo" class="w-full h-full object-cover" />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20"></div>
+                </div>
+                <span class="absolute inset-0 flex items-center justify-center text-xl font-bold text-purple-100">{{ member.initial }}</span>
+              </div>
+
               <h3 class="text-xl font-semibold text-purple-100">{{ member.name }}</h3>
               <p class="text-purple-400 text-sm">{{ member.role }}</p>
             </div>
@@ -144,5 +315,175 @@
         </div>
       </div>
     </section>
+
+    <!-- FLOATING LOGO NAVIGATION -->
+    <div class="fixed bottom-6 right-6 z-50 group">
+      <div class="relative w-14 h-14 rounded-full overflow-hidden glass shadow-2xl hover:scale-110 transition-all duration-300 cursor-pointer logo-ring">
+        <img src="{% static 'ink.ico' %}" alt="Lume Logo" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-70"></div>
+        <span class="absolute bottom-1 left-0 right-0 text-center text-xs font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-pink-400 drop-shadow-md">LUME</span>
+      </div>
+
+      <!-- Pop-up navigation menu -->
+      <div class="absolute bottom-full right-0 mb-2 w-48 p-2 rounded-lg glass opacity-0 scale-95 transition-all duration-300 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto">
+        <div class="flex flex-col gap-2">
+          <a href="#features" class="px-4 py-2 rounded-md hover:bg-purple-700/40 transition-colors text-sm font-medium">Features</a>
+          <a href="#team" class="px-4 py-2 rounded-md hover:bg-purple-700/40 transition-colors text-sm font-medium">Our Team</a>
+          {% if user.is_authenticated %}
+            <a href="{% url 'article_create' %}" class="px-4 py-2 rounded-md hover:bg-purple-700/40 transition-colors text-sm font-medium">Create Article</a>
+          {% else %}
+            <a href="{% url 'account_signup' %}" class="px-4 py-2 rounded-md hover:bg-gradient-to-r hover:from-fuchsia-600/50 hover:to-purple-600/50 transition-colors text-sm font-medium">Join Now</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
   </main>
+
+  <!-- Scroll reveal script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Initialize scroll reveal
+      function reveal() {
+        var reveals = document.querySelectorAll('.reveal')
+    
+        for (var i = 0; i < reveals.length; i++) {
+          var windowHeight = window.innerHeight
+          var elementTop = reveals[i].getBoundingClientRect().top
+          var elementVisible = 150
+    
+          if (elementTop < windowHeight - elementVisible) {
+            reveals[i].classList.add('active')
+          }
+        }
+      }
+    
+      window.addEventListener('scroll', reveal)
+      reveal() // Call once to check initial elements
+    
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault()
+    
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+          })
+        })
+      })
+    })
+  </script>
+
+  <!-- Optional: Particles.js for hero background -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+          particles: {
+            number: {
+              value: 80,
+              density: {
+                enable: true,
+                value_area: 800
+              }
+            },
+            color: {
+              value: '#a855f7'
+            },
+            shape: {
+              type: 'circle',
+              stroke: {
+                width: 0,
+                color: '#000000'
+              },
+              polygon: {
+                nb_sides: 5
+              }
+            },
+            opacity: {
+              value: 0.3,
+              random: true,
+              anim: {
+                enable: true,
+                speed: 0.5,
+                opacity_min: 0.1,
+                sync: false
+              }
+            },
+            size: {
+              value: 3,
+              random: true,
+              anim: {
+                enable: true,
+                speed: 2,
+                size_min: 0.1,
+                sync: false
+              }
+            },
+            line_linked: {
+              enable: true,
+              distance: 150,
+              color: '#a855f7',
+              opacity: 0.2,
+              width: 1
+            },
+            move: {
+              enable: true,
+              speed: 1,
+              direction: 'none',
+              random: true,
+              straight: false,
+              out_mode: 'out',
+              bounce: false,
+              attract: {
+                enable: true,
+                rotateX: 600,
+                rotateY: 1200
+              }
+            }
+          },
+          interactivity: {
+            detect_on: 'canvas',
+            events: {
+              onhover: {
+                enable: true,
+                mode: 'grab'
+              },
+              onclick: {
+                enable: true,
+                mode: 'push'
+              },
+              resize: true
+            },
+            modes: {
+              grab: {
+                distance: 140,
+                line_linked: {
+                  opacity: 0.5
+                }
+              },
+              bubble: {
+                distance: 400,
+                size: 40,
+                duration: 2,
+                opacity: 8,
+                speed: 3
+              },
+              repulse: {
+                distance: 200,
+                duration: 0.4
+              },
+              push: {
+                particles_nb: 4
+              },
+              remove: {
+                particles_nb: 2
+              }
+            }
+          },
+          retina_detect: true
+        })
+      }
+    })
+  </script>
 {% endblock %}

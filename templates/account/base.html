@@ -11,7 +11,7 @@
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark" />
-    <link rel="icon" href="{% static 'favicon.ico' %}" />
+    <link rel="icon" href="{% static 'ink.png' %}" />
     <link rel="stylesheet" href="{% static 'output.css' %}" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
@@ -42,7 +42,29 @@
       
       
       
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       bg-gradient-to-br from-black via-[#1b0029] to-black text-purple-100
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -55,7 +77,23 @@
     {% endblock %} min-h-screen flex flex-col transition-colors duration-500">
     <!-- Navbar -->
     <nav class="bg-gradient-to-r from-black via-[#290038] to-[#1a002d] shadow-lg backdrop-blur-md py-4 px-6 flex justify-between items-center">
-      <a href="/" class="text-2xl font-extrabold text-purple-400 hover:text-purple-300 transition duration-300 tracking-tight">Lume</a>
+      <a href="/" class="relative group flex items-center gap-2 text-2xl font-extrabold text-purple-400 hover:text-purple-300 transition duration-300 tracking-tight">
+        <div class="relative w-12 h-12">
+          <!-- Circular image with overlay -->
+          <div class="absolute inset-0 rounded-full overflow-hidden shadow-lg">
+            <img src="{% static 'ink.ico' %}" alt="Lume Logo" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" loading="eager" />
+            <!-- Gradient overlay for text visibility -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-70"></div>
+          </div>
+
+          <!-- Text overlay positioned at the center of the circle -->
+          <span class="absolute bottom-0 left-0 right-0 text-center text-base font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-purple-500 drop-shadow-md">Lume</span>
+        </div>
+
+        <!-- Optional: Keep the text beside the logo or remove this line if you only want it on the image -->
+        <span class="sm:block hidden">Lume</span>
+      </a>
+
       <div class="flex items-center gap-4 text-sm sm:text-base text-purple-200">
         <a href="{% url 'article_list' %}" class="hover:text-purple-300 transition">Explore</a>
         {% if user.is_authenticated %}
@@ -74,7 +112,6 @@
         {% endif %}
       </div>
     </nav>
-
     {% include 'toast.html' %}
 
     <!-- Main Content -->
