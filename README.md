@@ -141,6 +141,40 @@ poetry run python manage.py test
 
 ---
 
+---
+
+## 📊 UML Diagrams
+
+Below are the key UML diagrams representing the Lume platform's design and flow.
+
+### 🎯 Use Case Diagram
+
+Shows the interaction between users (Visitor, Writer, Admin) and the system, including AI services:
+
+![Use Case Diagram](/uml/usecase.png)
+
+---
+
+### 🧱 Class Diagram
+
+Defines the core data models and relationships across apps like `inkwell`, `persona`, `echoes`, and `pulse`:
+
+![Class Diagram](/uml/class.png)
+
+<!-- ---
+
+### ⏱️ Sequence Diagram
+
+Illustrates the sequence of operations when a user creates an article and uses AI tools for enhancement:
+
+![Sequence Diagram](static/uml/sequence_diagram.png) -->
+
+---
+
+### 🧩 Location
+
+All UML source files (`*.puml`) and generated PNGs are stored in:
+
 ## 🤝 Contributing
 
 We welcome contributions! Fork the repo, create a feature branch, and open a PR.

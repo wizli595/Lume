@@ -1,0 +1,59 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class User {
+    +username: String
+    +email: String
+    +bio: Text
+    +avatar: Image
+}
+
+class Article {
+    +title: String
+    +slug: String
+    +content: Text
+    +is_draft: Boolean
+    +created_at: DateTime
+    +author: User
+}
+
+class Comment {
+    +text: Text
+    +created_at: DateTime
+    +author: User
+    +article: Article
+    +parent: Comment
+    +is_deleted: Boolean
+}
+
+class Like {
+    +user: User
+    +comment: Comment
+}
+
+class Follow {
+    +follower: User
+    +following: User
+    +created_at: DateTime
+}
+
+class AITool {
+    +summary(article): String
+    +translate(article, lang): String
+    +suggest_title(article): String
+}
+
+User "1" --> "0..*" Article : writes
+Article "1" --> "0..*" Comment
+Comment "0..1" --> "0..*" Comment : replies
+User "1" --> "0..*" Comment
+User "1" --> "0..*" Like
+Comment "1" --> "0..*" Like
+
+User "1" --> "0..*" Follow : follows
+Follow "1" --> "1" User : followed_by
+
+AITool --> Article : enhances
+AITool --> User : initiated_by
+
+@enduml
