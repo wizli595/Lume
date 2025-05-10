@@ -1,4 +1,24 @@
-# 🖋️ Lume
+<p align="center">
+  <img src="static/ink.ico" alt="LUME Logo" width="280" />
+</p>
+
+<h1 align="center">🖋️ LUME</h1>
+<p align="center">
+  <em>A modular, AI-powered platform for writing, discussing, and enhancing articles</em>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Django-5.2-green?style=for-the-badge&logo=django" />
+  <img src="https://img.shields.io/badge/Python-3.11-blue?style=for-the-badge&logo=python" />
+  <img src="https://img.shields.io/badge/TailwindCSS-3.4-38b2ac?style=for-the-badge&logo=tailwind-css" />
+  <img src="https://img.shields.io/badge/HTMX-%23ec4899?style=for-the-badge&logo=html5" />
+  <img src="https://img.shields.io/badge/Alpine.js-blueviolet?style=for-the-badge&logo=alpine.js" />
+  <img src="https://img.shields.io/badge/LangChain-AI-ff6f61?style=for-the-badge&logo=openai" />
+  <img src="https://img.shields.io/badge/OpenAI-GPT--4-black?style=for-the-badge&logo=openai" />
+  <img src="https://img.shields.io/badge/Poetry-Dependency_Management-orange?style=for-the-badge&logo=python" />
+  <img src="https://img.shields.io/badge/MySQL-Prod-yellow?style=for-the-badge&logo=mysql" />
+  <img src="https://img.shields.io/badge/SQLite-Dev-lightgrey?style=for-the-badge&logo=sqlite" />
+</p>
 
 **Lume** is a modular, AI-enhanced content platform designed to fuse the power of writing, community, and intelligence into one cohesive experience. Built with Django, LangChain, and Tailwind CSS, the platform offers writers and readers a smart, elegant, and responsive space for publishing and discussing articles.
 
@@ -150,6 +170,8 @@ Below are the key UML diagrams representing the Lume platform's design and flow.
 ### 🎯 Use Case Diagram
 
 Shows the interaction between users (Visitor, Writer, Admin) and the system, including AI services:
+
+### ![Badge](https://img.shields.io/badge/UML-Diagram-blueviolet?logo=uml&style=flat-square) Use Case Diagram
 
 ![Use Case Diagram](/uml/usecase.png)
 
