@@ -1,0 +1,10 @@
+<div class="space-y-4">
+  <h2 class="text-xl font-bold text-purple-400">{{ file_name }}</h2>
+
+  <!-- Add max-height + object-contain to reduce layout jump -->
+  <div class="w-full max-h-[500px] overflow-hidden flex justify-center items-center">
+    <img src="{{ plantuml_url }}" alt="PlantUML Diagram" class="rounded-xl border border-gray-300 dark:border-gray-600 shadow max-h-[500px] object-contain w-auto" />
+  </div>
+
+  <pre class="bg-gray-900 text-green-400 p-3 rounded overflow-x-auto max-h-64 text-sm">{{ puml_code }}</pre>
+</div>

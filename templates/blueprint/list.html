@@ -1,0 +1,41 @@
+{% extends 'account/base.html' %}
+{% load slugify_extras %}
+
+{% block content %}
+  <h1 class="text-3xl font-bold mb-6">UML Diagrams</h1>
+
+  <ul class="grid grid-cols-2 md:grid-cols-3 gap-6">
+    {% for d in diagrams %}
+      <li class="bg-white/10 p-4 rounded-xl shadow hover:shadow-lg transition space-y-2">
+        <!-- Image-based detail modal -->
+        <button hx-get="{% url 'uml_detail' d.pk %}" hx-target="#modal-content" hx-trigger="click" _="on click add .flex to #modal remove .hidden from #modal" class="w-full text-left space-y-1">
+          <p class="text-lg font-semibold">
+            {{ d.title }}
+            <span class="text-sm text-purple-300">({{ d.get_diagram_type_display }})</span>
+          </p>
+          <img src="{{ d.image.url }}" class="rounded-lg border border-white/20 shadow" />
+        </button>
+
+        <!-- .puml file modal preview -->
+        {% if d.diagram_type == 'class' %}
+          <button hx-get="{% url 'plantuml_preview' d.title|slugify_filter|add:'.puml' %}" hx-target="#modal-content" hx-trigger="click" _="on click add .flex to #modal remove .hidden from #modal" class="text-sm text-blue-300 underline hover:text-blue-500">🔍 Preview .puml version</button>
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>No diagrams found.</li>
+    {% endfor %}
+  </ul>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-50 items-center justify-center p-4 transition-all">
+    <div class="relative bg-white dark:bg-gray-900 rounded-2xl p-6 max-w-3xl w-full shadow-lg animate-fade-in-up">
+      <!-- Close Button -->
+      <button class="absolute top-3 right-3 text-white dark:text-white text-2xl font-bold z-50 hover:text-red-500" _="on click add .hidden to #modal remove .flex from #modal" aria-label="Close modal">&times;</button>
+
+      <!-- HTMX-injected content -->
+      <div id="modal-content" class="space-y-4 text-black dark:text-white">
+        <!-- Loaded dynamically -->
+      </div>
+    </div>
+  </div>
+{% endblock %}

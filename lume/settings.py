@@ -81,7 +81,7 @@ DJANGO_APPS = [
     'django.contrib.sites',
 ]
 THIRD_PARTY_APPS = ["allauth", "allauth.account","widget_tweaks","django_browser_reload","django_htmx"]
-PROJECT_APPS = ['persona','inkwell', 'pulse','echoes','InkFuse']
+PROJECT_APPS = ['persona','inkwell', 'pulse','echoes','InkFuse', 'blueprint']
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
 MIDDLEWARE = [
