@@ -25,6 +25,8 @@ class ProfileView(LoginRequiredMixin,UserPassesTestMixin,DetailView):
         profile_user = self.get_object()
         user = self.request.user
 
+        context['is_admin_viewing']= user.is_superuser
+
         if user.is_authenticated and user != profile_user:
             context['is_following'] = Follow.objects.filter(follower=user, following=profile_user).exists()
         else:

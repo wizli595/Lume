@@ -53,6 +53,22 @@
         <h3 class="text-2xl font-semibold mb-4 text-purple-200">🧾 About Me</h3>
         <p class="text-purple-100/80 leading-relaxed">{{ profile_user.profile.bio|default:"This user hasn't written a bio yet." }}</p>
       </div>
+      {% if is_admin_viewing %}
+        <div class="bg-gradient-to-r from-red-800 to-pink-700 text-white p-4 rounded-2xl shadow-md flex flex-col md:flex-row justify-between items-center gap-4 animate-fade-in-up">
+          <div class="flex items-center gap-3">
+            <span class="text-3xl">🛡️</span>
+            <div>
+              <p class="text-lg font-semibold">Admin Access</p>
+              <p class="text-sm text-white/80">You're viewing this profile as an admin.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <a href="{% url 'uml_list' %}" class="inline-flex items-center gap-2 bg-black/10 hover:bg-black/20 text-sm px-4 py-2 rounded-lg transition">📐 <span>View UML Diagrams</span></a>
+            <a href="/admin/" class="inline-flex items-center gap-2 bg-black/10 hover:bg-black/20 text-sm px-4 py-2 rounded-lg transition">⚙️ <span>Admin Panel</span></a>
+          </div>
+        </div>
+      {% endif %}
     </div>
   </div>
 {% endblock %}
